@@ -1,0 +1,3 @@
+<map id="exchange.Bitstamp" name="exchange.Bitstamp">
+<area shape="rect" id="node2" href="$classexchange_1_1_exchange.html" title="{exchange.Exchange\n|+ originalTicker\l+ startDt\l+ ticker\l+ trades\l|+ __init__()\l+ __repr__()\l+ __str__()\l+ dnload_orderbook()\l+ dnload_ticker()\l+ dnload_trades()\l+ get_exch_name()\l+ get_orderbook()\l+ get_ticker()\l+ get_trades()\land 6 more...\l}" alt="" coords="134,175,278,443"/>
+</map>

@@ -1,4 +1,6 @@
 var searchData=
 [
-  ['low',['low',['../classexch2exch_1_1_xbt_prices.html#a8cef13f833a894d4fc5b8296bb4906fa',1,'exch2exch.XbtPrices.low()'],['../classexchange_1_1_fox_bit.html#acd666444cff98fe477651120ddb0f915',1,'exchange.FoxBit.low()'],['../classexchange_1_1_mercado_bitcoin.html#aaa3aae824bfc5ba3b7dc5252e9554713',1,'exchange.MercadoBitcoin.low()'],['../classexchange_1_1_ok_coin.html#a1afa53e0ad63830d0585288abea42094',1,'exchange.OkCoin.low()']]]
+  ['gmax',['gmax',['../classexch2exch_1_1_differences.html#a569f2a6fa0e33ad725c3c3ada259ddcc',1,'exch2exch::Differences']]],
+  ['gmin',['gmin',['../classexch2exch_1_1_differences.html#a33c9add531b5b46c49ae322657343382',1,'exch2exch::Differences']]],
+  ['google',['google',['../namespaceraw__urlparser.html#a1b812abf4fbbd8478dca91446c66b646',1,'raw_urlparser']]]
 ];

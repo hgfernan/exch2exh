@@ -12,18 +12,20 @@ From:
 import sys      # argv, exit()
 import rates    # Google, XRates
 import argparse # ArgumentParser, 
-import datetime # datetime
 
-import gen_factory # GenFactory
+import differences # DiffTickeer
 import exchange    # Exchange
+import gen_factory # GenFactory
+import start_time
 
 class Args: 
     pass
 
 class Parameters:
     def __init__ (self):
-        self.summaryOutput        = None
-        self.conclusionOutput     = None
+#        self.summaryOutput        = None
+#        self.conclusionOutput     = None
+        self.list                 = None
         self.mainRates            = None
         self.allRates             = None
         self.mainRatesOutput      = None
@@ -34,19 +36,23 @@ class Parameters:
         self.destinationOutput    = None
         self.rawOriginOutputput   = None
         self.rawDestinationOutput = None
+        self.repConclusionOutput  = None
+        self.jsonConclusionOutput = None
         self.verbose              = False
+        self.rateNames            = None
+        self.exchNames            = None
 
-    def setSummaryOutput (self, summaryOutput):
-        self.summaryOutput = summaryOutput
-
-    def getSummaryOutput (self):
-        return self.summaryOutput
-
-    def setConclusionOutput (self, conclusionOutput):
-        self.conclusionOutput = conclusionOutput
-
-    def getConclusionOutput (self):
-        return self.conclusionOutput
+#    def setSummaryOutput (self, summaryOutput):
+#        self.summaryOutput = summaryOutput
+#
+#    def getSummaryOutput (self):
+#        return self.summaryOutput
+#
+#    def setConclusionOutput (self, conclusionOutput):
+#        self.conclusionOutput = conclusionOutput
+#
+#    def getConclusionOutput (self):
+#        return self.conclusionOutput
 
     def setMainRates (self, mainRates):
         self.mainRates = mainRates
@@ -107,6 +113,18 @@ class Parameters:
 
     def getRawDestinationOutput (self):
         return self.rawDestinationOutput 
+    
+    def getRepConclusionOutput (self):
+        return self.repConclusionOutput 
+    
+    def setRepConclusionOutput (self, repConclusionOutput):
+        self.repConclusionOutput = repConclusionOutput
+    
+    def getJsonConclusionOutput (self):
+        return self.jsonConclusionOutput
+    
+    def setJsonConclusionOutput (self, jsonConclusionOutput):
+        self.jsonConclusionOutput = jsonConclusionOutput
 
     def setVerbose (self, verbose):
         self.verbose = verbose
@@ -116,20 +134,23 @@ class Parameters:
         
 class Application:
     def __init__ (self):
-        d = datetime.datetime.now ()
+        d = start_time.getDatetime ()
         self.suffix = d.strftime ('%Y%m%d_%H%M')
         self.prefix = 'e2e'
         self.params = None
     
     def parseCmdLine (self):
-        desc = 'Compare two exchanges for a round operation'
+        desc = 'Compare two exchanges for an arbitrage operation'
         parser = argparse.ArgumentParser (description = desc)
         
-        desc = 'Summary report (Default is stdout)' 
-        parser.add_argument ('-s', '--summary', required = False,
-                             help = desc)
-        desc = 'File name for the conclusion of the arbitrage'
-        parser.add_argument ('-c', '--conclusion', required = True,
+#        desc = 'Summary report (Default is stdout)' 
+#        parser.add_argument ('-s', '--summary', required = False,
+#                             help = desc)
+#        desc = 'File name for the conclusion of the arbitrage'
+#        parser.add_argument ('-c', '--conclusion', required = True,
+#                             help = desc)
+        desc = 'List parameters (Bitcoin and fiat exchanges) in std output'
+        parser.add_argument ('-l', '--list', action = "store_true",
                              help = desc)
         parser.add_argument ('-m', '--main', metavar = "RATES", 
                              default = 'Google',
@@ -137,11 +158,11 @@ class Application:
 #        parser.add_argument ('-a', '--alternative', metavar = "RATES",
 #                             default = 'XRates',
 #                             help = 'Alternative rate service')
-        parser.add_argument ('--origin', '-o', metavar = "EXCHANGE",
-                             required = True,
+        parser.add_argument ('-o', '--origin', metavar = "EXCHANGE",
+#                             required = True,
                              help = 'Origin exchange')
         parser.add_argument ('-d', '--destination', metavar = "EXCHANGE",
-                             required = True,
+#                             required = True,
                              help = 'Destination exchange')
         parser.add_argument ('-v', '--verbose', action = "store_true",
                              help = 'Increase output verbosity')
@@ -151,8 +172,9 @@ class Application:
         # TODO complete the copy of cmdline parameters
         
         result = Args ()
-        result.summary     = args.summary 
-        result.conclusion  = args.conclusion 
+#        result.summary     = args.summary 
+#        result.conclusion  = args.conclusion 
+        result.list        = args.list
         result.mainRates   = args.main 
 #        result.altRates    = args.alternative 
         result.origin      = args.origin 
@@ -166,32 +188,50 @@ class Application:
         
     def interpretArgs (self):
         result = Parameters ()
+        self.params = result
         
-        # Open summary file
-        if self.args.summary == None:
-            try:
-                sum_nam =  self.prefix + '_' + self.suffix + '.sum'
-                sum_f = open (sum_nam, 'w')
-                
-            except IOError:
-                # TODO an application specific msg here
-                raise
-        else:
-            sum_f = sys.__stdout__
+#        # Open summary file
+#        if self.args.summary == None:
+#            try:
+#                sum_nam =  self.prefix + '_' + self.suffix + '.sum'
+#                sum_f = open (sum_nam, 'w')
+#                
+#            except IOError:
+#                # TODO an application specific msg here
+#                raise
+#        else:
+#            sum_f = sys.__stdout__
+#            
+#        result.setSummaryOutput (sum_f)
+#            
+#        # TODO Open output files for destination exchange
+#        try:
+#            cnc_nam  =  self.prefix + '_conclusion'
+#            cnc_nam += '_' + self.suffix + '.json'
+#            cnc_f = open (cnc_nam, 'w')
+#            
+#        except IOError:
+#            # TODO an application specific msg here
+#            raise
+#            
+#        result.setConclusionOutput (cnc_f)
+        
+        # Generate rates factory and its names 
+        gfRates = gen_factory.GenFactory (rates.Rates)
+        rates_names = gfRates.validClassNames ()
+
+        # Get exchange names 
+        gfExchange = gen_factory.GenFactory (exchange.Exchange)
+        exchNames = gfExchange.validClassNames ()
+           
+        self.list = False
+        if self.args.list:
+            self.list = True
+            result.rateNames = gfRates.validClassNames ()
+            result.exchNames = gfExchange.validClassNames ()
             
-        result.setSummaryOutput (sum_f)
-            
-        # TODO Open output files for destination exchange
-        try:
-            cnc_nam  =  self.prefix + '_conclusion'
-            cnc_nam += '_' + self.suffix + '.json'
-            cnc_f = open (cnc_nam, 'w')
-            
-        except IOError:
-            # TODO an application specific msg here
-            raise
-            
-        result.setConclusionOutput (cnc_f)
+            # Normal function termination
+            return result
             
         # TODO confirm that destinatian and origin exchanges are not equal
         args = self.args 
@@ -199,24 +239,20 @@ class Application:
             fmt = 'ERROR: Origin exchange {0} equal to destination {1}'
             msg = fmt.format (args.origin, args.destination)
             raise Exception (msg)
-
-        # TODO get exchange names 
-        gfExchange = gen_factory.GenFactory (exchange.Exchange)
-        exch_names = gfExchange.validClassNames ()
-            
+        
         # TODO validate destination exchange
-        if args.destination not in exch_names:
+        if not gfExchange.isValidClassName (args.destination):
             fmt  = 'ERROR: Destination exchange {0} is not a valid '
             fmt += 'exchange name.\n'
             fmt += '\tShould be one of {1}'
-            msg = fmt.format (args.destination, exch_names)
+            msg = fmt.format (args.destination, exchNames)
             raise Exception (msg)
             
         # TODO validate origin exchange
-        if args.origin not in exch_names:
+        if not gfExchange.isValidClassName (args.origin):
             fmt  = 'ERROR: Origin exchange {0} is not a valid exchange name.\n'
             fmt += '\tShould be one of {1}'
-            msg = fmt.format (args.origin, exch_names)
+            msg = fmt.format (args.origin, exchNames)
             raise Exception (msg)
         
         # TODO open connection with destination exchange
@@ -274,12 +310,11 @@ class Application:
         result.setRawOriginOutput (org_f)
             
         # TODO open connection with main rate service
-        gfRates = gen_factory.GenFactory (rates.Rates)
-        rates_names = gfRates.validClassNames ()
 
         # TODO validate main rate service
-        if args.mainRates not in rates_names:
-            fmt  = 'ERROR: Main rates service {0} is not a valid rates name.\n'
+        if not gfRates.isValidClassName (args.mainRates):
+            fmt  = 'ERROR: Main rates service {0} '
+            fmt += 'is not a valid rates name.\n'
             fmt += '\tShould be one of {1}'
             msg = fmt.format (args.mainRates, rates_names)
             raise Exception (msg)
@@ -321,18 +356,49 @@ class Application:
             raise        
 
         result.setAllRatesOutput (allrat_f)
-        
-        args = self.args 
+            
+        try:
+            conc_nam  = 'conc_' + orgExchange.get_exch_prefix ()
+            conc_nam += '_' + dstExchange.get_exch_prefix () + '_' 
+            conc_nam += self.suffix + '.rep'
+            conc_f    = open (conc_nam, 'w')
+            
+        except IOError:
+            # TODO an application specific msg here
+            raise        
+
+        result.setRepConclusionOutput (conc_f)
+            
+        try:
+            conc_nam  = 'conc_' + orgExchange.get_exch_prefix ()
+            conc_nam += '_' + dstExchange.get_exch_prefix () + '_' 
+            conc_nam += self.suffix + '.json'
+            conc_f    = open (conc_nam, 'w')
+            
+        except IOError:
+            # TODO an application specific msg here
+            raise        
+
+        result.setJsonConclusionOutput (conc_f)
         
         self.params = result
-               
-        if args.verbose:            
-            print ('Verbose output enabled')
+        
+        args = self.args                
+        if args.verbose:
+            repFile = result.getRepConclusionOutput ()
+                        
             
-            print ('Main rate service: {0}'.format (args.mainRates))
-            print ('Exchanges')
-            print ('Origin:            {0}'.format (args.origin))
-            print ('Destination:       {0}'.format (args.destination))
+            lines = ['', '', '', '', '']
+            lines[0] = 'Verbose output enabled\n'
+            lines[1] = 'Main rate service: {0}'.format (args.mainRates)
+            lines[2] = 'Exchanges'
+            lines[3] = 'Origin:            {0}'.format (args.origin)
+            lines[4] = 'Destination:       {0}\n'.format (args.destination)
+
+            for line in lines:
+                repFile.write (line + '\n')
+            
+            repFile.flush ()
             
         # Normal function termination 
         return result 
@@ -340,6 +406,32 @@ class Application:
     def getParameters (self): 
         return self.params
             
+    def listParameters (self):
+        if self.list:
+            params = self.getParameters ()
+            lines = []
+            
+            lines.append ("Valid rate services\n\t")            
+            comma = ""
+            for rateName in params.rateNames:
+                lines[0] += comma + rateName
+                comma = ", "
+            
+            lines.append ("Valid exchanges\n\t")            
+            comma = ""
+            for exchName in params.exchNames:
+                lines[1] += comma + exchName
+                comma = ", "
+                
+            for line in lines:
+                print (line)
+                
+            # Normal function termination
+            return True
+            
+        # Normal function 
+        return False
+    
     def outMainRates (self):
         params = self.getParameters ()
         mainRates = params.getMainRates ()
@@ -350,14 +442,23 @@ class Application:
         outFile.close ()
     
     def outAllRates (self):
+        # TODO calculate average rate and individual differences
         params = self.getParameters ()
         allRates = params.getAllRates ()
         outFile = params.getAllRatesOutput ()
+        repFile = params.getRepConclusionOutput ()
+        
+        repFile.write ("Exchange services\n") 
+        
         for theseRates in allRates:
             line = str (theseRates) + "\n"
             outFile.write (line)
+            repFile.write (line)
+
+        repFile.write ('\n')
         
         outFile.close ()
+        repFile.flush ()
     
     def outOriginExchange (self):
         params = self.getParameters ()
@@ -365,21 +466,31 @@ class Application:
         # Get origin exchange data
         origin = params.getOrigin ()
         origin.get_ticker ()
-        ticker = origin.mk_ticker ()
+        ticker = origin.mkTicker ()
 
-        # Output raw exchange data
+        # Output raw origin exchange data
         outFile = params.getRawOriginOutput ()
         line = str (origin.getOriginalTicker ()) + "\n"
         outFile.write (line)
         
         outFile.close ()
     
-        # TODO output e2e exchange data
+        # Output e2e origin exchange data
         outFile = params.getOriginOutput ()
         line = str (ticker.dumps ()) + "\n"
         outFile.write (line)
         
         outFile.close ()
+        
+        # TODO output origin data as report
+        repFile = params.getRepConclusionOutput ()
+        line = "Origin exchange"
+        repFile.write (line + '\n')
+        
+        line = str (ticker) + "\n"
+        repFile.write (line)
+        
+        repFile.flush ()
     
         # Normal function termination 
         return 
@@ -390,7 +501,7 @@ class Application:
         # Get origin exchange data
         destination = params.getDestination ()
         destination.get_ticker ()
-        ticker = destination.mk_ticker ()
+        ticker = destination.mkTicker ()
 
         # Output raw exchange data
         outFile = params.getRawDestinationOutput ()
@@ -399,19 +510,55 @@ class Application:
         
         outFile.close ()
     
-        # TODO output e2e exchange data
+        # Output e2e exchange data
         outFile = params.getDestinationOutput ()
         line = str (ticker.dumps ()) + "\n"
         outFile.write (line)
         
         outFile.close ()
+        
+        # Output origin data as report
+        repFile = params.getRepConclusionOutput ()
+        line = "Destination exchange"
+        repFile.write (line + '\n')
+        
+        line = str (ticker) + "\n"
+        repFile.write (line)
+        
+        repFile.flush ()
     
         # Normal function termination 
         return 
     
     def genExpectations (self):
-        pass
-    
+        params = self.getParameters ()
+
+        # Create the difference
+        origin      = params.getOrigin ()
+        orgTicker   = origin.mkTicker ()
+        destination = params.getDestination ()
+        dstTicker   = destination.mkTicker ()
+        mainRates   = params.getMainRates ()
+        
+        diff = differences.DiffTicker (mainRates, dstTicker, orgTicker)
+       
+        # Generate the difference
+        diff.calc ()
+        
+        # TODO output the formatted difference report
+        outFile = params.getRepConclusionOutput ()
+        line = str (diff) + "\n"
+        outFile.write (line)
+        
+        outFile.close ()
+        
+        # TODO output the JSON differene report
+        outFile = params.getJsonConclusionOutput ()
+        line = diff.dumps () + "\n"
+        outFile.write (line)
+        
+        outFile.close ()
+            
     def genOutput (self):
         pass
 
@@ -428,22 +575,25 @@ def main (argv):
     # TODO return according to error
     app.interpretArgs ()
     
-    # TODO consult main rate service
+    # TODO if parameters should be listed
+    if app.listParameters ():
+        sys.exit (0)
+    
+    # Consult main rate service
     app.outMainRates ()
     
-    # TODO consult all rate services
+    # Consult all rate services
     app.outAllRates ()
     
-    # TODO consult origin exchange 
+    # Consult origin exchange 
     app.outOriginExchange ()
     
-    # TODO consult destination exchange
+    # Consult destination exchange
     app.outDestinationExchange ()
     
-    # TODO generate expectations
+    # Generate expectations
+    app.genExpectations ()
     
-    # TODO generate output report and JSON files
-
     # Normal function termination
     return 0
 

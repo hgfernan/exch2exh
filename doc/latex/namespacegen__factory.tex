@@ -1,0 +1,59 @@
+\hypertarget{namespacegen__factory}{}\section{gen\+\_\+factory Namespace Reference}
+\label{namespacegen__factory}\index{gen\+\_\+factory@{gen\+\_\+factory}}
+\subsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+class \hyperlink{classgen__factory_1_1_dummy}{Dummy}
+\item 
+class \hyperlink{classgen__factory_1_1_dummy1}{Dummy1}
+\item 
+class \hyperlink{classgen__factory_1_1_dummy2}{Dummy2}
+\item 
+class \hyperlink{classgen__factory_1_1_dummy3}{Dummy3}
+\item 
+class \hyperlink{classgen__factory_1_1_gen_factory}{Gen\+Factory}
+\end{DoxyCompactItemize}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+def \hyperlink{namespacegen__factory_a785bd40533dd477ffff224d65ba1c5c3}{main} ()
+\end{DoxyCompactItemize}
+
+
+\subsection{Function Documentation}
+\mbox{\Hypertarget{namespacegen__factory_a785bd40533dd477ffff224d65ba1c5c3}\label{namespacegen__factory_a785bd40533dd477ffff224d65ba1c5c3}} 
+\index{gen\+\_\+factory@{gen\+\_\+factory}!main@{main}}
+\index{main@{main}!gen\+\_\+factory@{gen\+\_\+factory}}
+\subsubsection{\texorpdfstring{main()}{main()}}
+{\footnotesize\ttfamily def gen\+\_\+factory.\+main (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Definition at line \hyperlink{gen__factory_8py_source_l00084}{84} of file \hyperlink{gen__factory_8py_source}{gen\+\_\+factory.\+py}.
+
+
+\begin{DoxyCode}
+00084 \textcolor{keyword}{def }\hyperlink{namespacegen__factory_a785bd40533dd477ffff224d65ba1c5c3}{main} ():
+00085     gf = GenFactory (Dummy)
+00086     
+00087 \textcolor{comment}{#    obj = gf.genObject ("Dummy2")}
+00088 \textcolor{comment}{#    }
+00089 \textcolor{comment}{#    nam = type (obj).\_\_name\_\_ }
+00090 \textcolor{comment}{#    print ("type (obj).\_\_name\_\_ = \{0\}".format (nam))}
+00091 \textcolor{comment}{#    }
+00092 \textcolor{comment}{#    obj.doSomething ()}
+00093 \textcolor{comment}{#    print ("="*12)}
+00094     
+00095     \textcolor{keywordflow}{for} cn \textcolor{keywordflow}{in} gf.validClassNames ():
+00096         \textcolor{keywordflow}{print} (\textcolor{stringliteral}{"Class \{0\}"}.format (cn))
+00097         obj = gf.genObject (cn)
+00098     
+00099         nam = type (obj).\_\_name\_\_ 
+00100         \textcolor{keywordflow}{print} (\textcolor{stringliteral}{"type (obj).\_\_name\_\_ = \{0\}"}.format (nam))
+00101         obj.doSomething ()
+00102         \textcolor{keywordflow}{print} ()
+00103         
+00104     \textcolor{comment}{# Normal function termination}
+00105     \textcolor{keywordflow}{return} 0
+00106 
+\end{DoxyCode}

@@ -1,0 +1,65 @@
+\hypertarget{namespacee2e}{}\section{e2e Namespace Reference}
+\label{namespacee2e}\index{e2e@{e2e}}
+\subsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+class \hyperlink{classe2e_1_1_application}{Application}
+\item 
+class \hyperlink{classe2e_1_1_args}{Args}
+\item 
+class \hyperlink{classe2e_1_1_parameters}{Parameters}
+\end{DoxyCompactItemize}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+def \hyperlink{namespacee2e_afb3e7d384688a07b72e1df5201192375}{main} (argv)
+\end{DoxyCompactItemize}
+
+
+\subsection{Function Documentation}
+\mbox{\Hypertarget{namespacee2e_afb3e7d384688a07b72e1df5201192375}\label{namespacee2e_afb3e7d384688a07b72e1df5201192375}} 
+\index{e2e@{e2e}!main@{main}}
+\index{main@{main}!e2e@{e2e}}
+\subsubsection{\texorpdfstring{main()}{main()}}
+{\footnotesize\ttfamily def e2e.\+main (\begin{DoxyParamCaption}\item[{}]{argv }\end{DoxyParamCaption})}
+
+
+
+Definition at line \hyperlink{e2e_8py_source_l00519}{519} of file \hyperlink{e2e_8py_source}{e2e.\+py}.
+
+
+\begin{DoxyCode}
+00519 \textcolor{keyword}{def }\hyperlink{namespacee2e_afb3e7d384688a07b72e1df5201192375}{main} (argv):
+00520     app = Application ()
+00521     
+00522     \textcolor{comment}{# TODO parse command line }
+00523     \textcolor{comment}{# TODO catch exception}
+00524     \textcolor{comment}{# TODO return according to error}
+00525     app.parseCmdLine ()
+00526     
+00527     \textcolor{comment}{# TODO interpret command line }
+00528     \textcolor{comment}{# TODO catch exception}
+00529     \textcolor{comment}{# TODO return according to error}
+00530     app.interpretArgs ()
+00531     
+00532     \textcolor{comment}{# Consult main rate service}
+00533     app.outMainRates ()
+00534     
+00535     \textcolor{comment}{# TODO consult all rate services}
+00536     app.outAllRates ()
+00537     
+00538     \textcolor{comment}{# TODO consult origin exchange }
+00539     app.outOriginExchange ()
+00540     
+00541     \textcolor{comment}{# TODO consult destination exchange}
+00542     app.outDestinationExchange ()
+00543     
+00544     \textcolor{comment}{# TODO generate expectations}
+00545     app.genExpectations ()
+00546     
+00547     \textcolor{comment}{# TODO generate summary}
+00548 
+00549     \textcolor{comment}{# Normal function termination}
+00550     \textcolor{keywordflow}{return} 0
+00551 
+\end{DoxyCode}

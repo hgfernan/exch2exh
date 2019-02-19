@@ -1,13 +1,6 @@
 var searchData=
 [
-  ['u_5fbrl2usd',['u_brl2usd',['../namespaceraw__urlparser.html#a876711ddd7ebb3991a35cc1768d1d22c',1,'raw_urlparser']]],
-  ['u_5fmb',['u_mb',['../namespaceraw__urlparser.html#a9a840f174b92a24c415b88c87e84b73d',1,'raw_urlparser']]],
-  ['u_5fok',['u_ok',['../namespaceraw__urlparser.html#a22c1a17803a88426d38d70ad6d4290d2',1,'raw_urlparser']]],
-  ['u_5fordrbk',['U_ORDRBK',['../classexchange_1_1_exchange.html#a83174d2fe96a1c737231d3b8b18d9807',1,'exchange.Exchange.U_ORDRBK()'],['../classexchange_1_1_mercado_bitcoin.html#a7dd22c2c0261557a694678d8057d2547',1,'exchange.MercadoBitcoin.U_ORDRBK()']]],
-  ['u_5fticker',['U_TICKER',['../classexchange_1_1_exchange.html#ab16df02480d727c533b02b5b7afa053b',1,'exchange.Exchange.U_TICKER()'],['../classexchange_1_1_fox_bit.html#a7ba3f64a2b55479da2239393c6140ec8',1,'exchange.FoxBit.U_TICKER()'],['../classexchange_1_1_mercado_bitcoin.html#a310b7df5ae9e8a46bad918428c67d4e8',1,'exchange.MercadoBitcoin.U_TICKER()'],['../classexchange_1_1_ok_coin.html#a81305ced2eb23b94feb7195d1d42afc2',1,'exchange.OkCoin.U_TICKER()']]],
-  ['u_5ftrades',['U_TRADES',['../classexchange_1_1_exchange.html#aafa0e023de170f51cbf9d48e1154587a',1,'exchange.Exchange.U_TRADES()'],['../classexchange_1_1_mercado_bitcoin.html#a20ad6407ef07ab8a55d3c022d1512a5d',1,'exchange.MercadoBitcoin.U_TRADES()']]],
-  ['u_5fusd2brl',['u_usd2brl',['../namespaceraw__urlparser.html#a63e1f0abe7b1f43c4891ce9aec98261d',1,'raw_urlparser']]],
-  ['url',['url',['../namespaceraw__urlparser.html#a9242b893f4f49ef7cc0d4e599b70daa4',1,'raw_urlparser']]],
-  ['urls',['urls',['../namespaceraw__urlparser.html#aded92a1146e1ce1f14fd79a361f947f9',1,'raw_urlparser']]],
-  ['usd2brl',['usd2brl',['../classexch2exch_1_1_rates.html#ab79ad6e4a42ca358e6b39c825a4b8a0b',1,'exch2exch.Rates.usd2brl()'],['../classraw__urlparser_1_1_rates.html#a52d9b688be8385a87783b27839749b4a',1,'raw_urlparser.Rates.usd2brl()']]]
+  ['pair',['pair',['../classexchange_1_1_ticker.html#a382f9199d13a7b5929a26065fad4e491',1,'exchange.Ticker.pair()'],['../classexchange_1_1_bitfinex.html#a901a5499667f1f2b391bc9dbbfe1c1c7',1,'exchange.Bitfinex.pair()'],['../classexchange_1_1_bitstamp.html#adf1f8e926f0cedb79bf57ab2dfa31776',1,'exchange.Bitstamp.pair()'],['../classexchange_1_1_fox_bit.html#abfd6daf1cbad94eb74bba4c97fe4a574',1,'exchange.FoxBit.pair()'],['../classexchange_1_1_mercado_bitcoin.html#a879f8ca352d313230d72e6e8785985a1',1,'exchange.MercadoBitcoin.pair()'],['../classexchange_1_1_ok_coin.html#a52f3b919f86565518d46c49c5b8f66a6',1,'exchange.OkCoin.pair()']]],
+  ['params',['params',['../classe2e_1_1_application.html#a57206c6ccc86c2659edfd8d73d2029f3',1,'e2e::Application']]],
+  ['prefix',['prefix',['../classe2e_1_1_application.html#a027ff25e5409ae17584978a09fc2611a',1,'e2e.Application.prefix()'],['../classrates_1_1_google.html#ada5de8700ad571d0ab819fa0163d6bbe',1,'rates.Google.prefix()'],['../classrates_1_1_x_rates.html#a3b92b41b0fbd77b44d01f094ff83dd9d',1,'rates.XRates.prefix()']]]
 ];
